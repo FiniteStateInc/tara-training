@@ -129,10 +129,38 @@ export async function POST(request: NextRequest) {
       if (progressError) throw progressError;
 
       // Update gamification (streak tracking)
+      const today = new Date().toISOString().split("T")[0];
+      const yesterdayDate = new Date();
+      yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+      const yesterday = yesterdayDate.toISOString().split("T")[0];
+
+      const { data: existingGamification } = await supabase
+        .from("user_gamification")
+        .select("current_streak, longest_streak, last_activity_date")
+        .eq("user_email", email)
+        .single();
+
+      const lastActivity = existingGamification?.last_activity_date || null;
+      const currentStreak = existingGamification?.current_streak || 0;
+      const longestStreak = existingGamification?.longest_streak || 0;
+
+      let nextStreak = currentStreak;
+      if (lastActivity === today) {
+        nextStreak = currentStreak;
+      } else if (lastActivity === yesterday) {
+        nextStreak = currentStreak + 1;
+      } else {
+        nextStreak = 1;
+      }
+
+      const nextLongest = Math.max(longestStreak, nextStreak);
+
       await supabase.from("user_gamification").upsert(
         {
           user_email: email,
-          last_activity_date: new Date().toISOString().split("T")[0],
+          current_streak: nextStreak,
+          longest_streak: nextLongest,
+          last_activity_date: today,
           updated_at: new Date().toISOString(),
         },
         { onConflict: "user_email" },
