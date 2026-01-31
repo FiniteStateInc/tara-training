@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Lightbulb, Sparkles } from "lucide-react";
+import { CheckCircle2, Lightbulb, Sparkles } from "lucide-react";
 
 interface LessonSidebarProps {
   title: string;
@@ -104,11 +104,16 @@ export function LessonSidebar({
               : "bg-teal-500 hover:bg-teal-600 text-black font-semibold glow-teal"
           }`}
         >
-          {isSaving
-            ? "Saving..."
-            : isCompleted
-              ? "✓ Task Completed"
-              : "Mark Complete"}
+          {isSaving ? (
+            "Saving..."
+          ) : isCompleted ? (
+            <span className="flex items-center justify-center gap-2">
+              <CheckCircle2 className="h-4 w-4" />
+              Task Completed
+            </span>
+          ) : (
+            "Mark Complete"
+          )}
         </Button>
 
         <p className="text-xs text-muted-foreground text-center mt-2">

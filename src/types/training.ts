@@ -95,6 +95,7 @@ export type ModuleStatus = "locked" | "available" | "in_progress" | "completed";
 export interface AssessmentQuestion {
   id: string;
   question: string;
+  topic: string;
   options: { id: string; text: string }[];
   correct_answer: string;
   category: "stride" | "risk" | "sbom" | "compliance";

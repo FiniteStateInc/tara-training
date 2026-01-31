@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { Flame } from "lucide-react";
 
 interface StreakIndicatorProps {
   streak: number;
@@ -12,7 +13,12 @@ export function StreakIndicator({ streak, className }: StreakIndicatorProps) {
   
   return (
     <div className={cn("flex items-center gap-1", className)}>
-      <span className={isActive ? "animate-pulse" : ""}>🔥</span>
+      <Flame
+        className={cn(
+          "h-4 w-4",
+          isActive ? "text-orange-400 animate-pulse" : "text-muted-foreground"
+        )}
+      />
       <span className={cn(
         "font-bold",
         isActive ? "text-orange-400" : "text-muted-foreground"

@@ -137,7 +137,7 @@ export default function ModulesPage() {
                   {stats.modulesCompleted === 0
                     ? "Start your first module below!"
                     : stats.modulesCompleted === stats.totalModules
-                      ? "🎉 All complete!"
+                      ? "All complete!"
                       : "Keep up the momentum!"}
                 </p>
               </div>

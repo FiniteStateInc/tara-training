@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { getAssessmentQuestions, calculateAssessmentResults } from "@/content/assessment/questions";
 import { useUser } from "@/components/email-entry/user-context";
+import { BookOpen } from "lucide-react";
 
 export default function PreAssessmentPage() {
   const router = useRouter();
@@ -133,7 +134,10 @@ export default function PreAssessmentPage() {
           {/* Areas for improvement */}
           {weakAreas.length > 0 && (
             <div className="p-4 rounded-lg bg-orange-500/10 border border-orange-500/30 mb-6 text-left">
-              <p className="text-sm font-semibold text-orange-400 mb-2">📚 Areas to Focus On</p>
+              <p className="text-sm font-semibold text-orange-400 mb-2 flex items-center gap-2">
+                <BookOpen className="h-4 w-4" />
+                Areas to Focus On
+              </p>
               <p className="text-sm text-muted-foreground mb-2">
                 Based on your results, pay extra attention to these topics during your training:
               </p>

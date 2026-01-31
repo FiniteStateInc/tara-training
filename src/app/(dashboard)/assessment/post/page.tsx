@@ -6,8 +6,19 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { getAssessmentQuestions, calculateAssessmentResults } from "@/content/assessment/questions";
+import {
+  getAssessmentQuestions,
+  calculateAssessmentResults,
+} from "@/content/assessment/questions";
 import { useUser } from "@/components/email-entry/user-context";
+import {
+  BookOpen,
+  Check,
+  Lightbulb,
+  PartyPopper,
+  TrendingUp,
+  X,
+} from "lucide-react";
 
 // Map categories to relevant modules for follow-up learning
 const categoryToModules: Record<string, { name: string; moduleId: string }[]> = {
@@ -164,8 +175,19 @@ export default function PostAssessmentPage() {
             <p className="text-sm text-green-400">
               {improvement > 0 ? `+${improvement}%` : improvement === 0 ? "Same" : `${improvement}%`} improvement
             </p>
-            <p className="text-2xl font-bold text-green-400 mt-1">
-              {improvement > 20 ? "🎉 Amazing Progress!" : improvement > 0 ? "📈 Good Improvement!" : "Keep Practicing!"}
+            <p className="text-2xl font-bold text-green-400 mt-1 flex items-center gap-2">
+              {improvement > 20 ? (
+                <PartyPopper className="h-6 w-6" />
+              ) : improvement > 0 ? (
+                <TrendingUp className="h-6 w-6" />
+              ) : null}
+              <span>
+                {improvement > 20
+                  ? "Amazing Progress!"
+                  : improvement > 0
+                    ? "Good Improvement!"
+                    : "Keep Practicing!"}
+              </span>
             </p>
           </div>
 
@@ -200,7 +222,10 @@ export default function PostAssessmentPage() {
           {/* Areas for improvement with recommended modules */}
           {weakAreas.length > 0 && (
             <div className="p-4 rounded-lg bg-orange-500/10 border border-orange-500/30 mb-6 text-left">
-              <p className="text-sm font-semibold text-orange-400 mb-2">📚 Recommended Follow-Up</p>
+              <p className="text-sm font-semibold text-orange-400 mb-2 flex items-center gap-2">
+                <BookOpen className="h-4 w-4" />
+                Recommended Follow-Up
+              </p>
               <p className="text-sm text-muted-foreground mb-3">
                 You may want to revisit these topics for additional practice:
               </p>
@@ -265,7 +290,7 @@ export default function PostAssessmentPage() {
                     {/* Improvement badge */}
                     {improved && (
                       <div className="flex items-center gap-2 mb-3 text-green-400">
-                        <span className="text-xl">🎉</span>
+                        <PartyPopper className="h-5 w-5" />
                         <span className="text-sm font-semibold">You improved on this one!</span>
                       </div>
                     )}
@@ -297,17 +322,42 @@ export default function PostAssessmentPage() {
                             </span>
                             <div className="flex items-center gap-2">
                               {wasPreAnswer && (
-                                <span className={`text-xs px-2 py-0.5 rounded ${preCorrect ? "bg-green-500/30 text-green-400" : "bg-red-500/30 text-red-400"}`}>
-                                  Pre {preCorrect ? "✓" : "✗"}
+                                <span
+                                  className={`text-xs px-2 py-0.5 rounded flex items-center gap-1 ${
+                                    preCorrect
+                                      ? "bg-green-500/30 text-green-400"
+                                      : "bg-red-500/30 text-red-400"
+                                  }`}
+                                >
+                                  Pre{" "}
+                                  {preCorrect ? (
+                                    <Check className="h-3 w-3" />
+                                  ) : (
+                                    <X className="h-3 w-3" />
+                                  )}
                                 </span>
                               )}
                               {wasPostAnswer && (
-                                <span className={`text-xs px-2 py-0.5 rounded ${postCorrect ? "bg-green-500/30 text-green-400" : "bg-red-500/30 text-red-400"}`}>
-                                  Post {postCorrect ? "✓" : "✗"}
+                                <span
+                                  className={`text-xs px-2 py-0.5 rounded flex items-center gap-1 ${
+                                    postCorrect
+                                      ? "bg-green-500/30 text-green-400"
+                                      : "bg-red-500/30 text-red-400"
+                                  }`}
+                                >
+                                  Post{" "}
+                                  {postCorrect ? (
+                                    <Check className="h-3 w-3" />
+                                  ) : (
+                                    <X className="h-3 w-3" />
+                                  )}
                                 </span>
                               )}
                               {isCorrectAnswer && !wasPreAnswer && !wasPostAnswer && (
-                                <span className="text-xs text-green-400">✓ Correct</span>
+                                <span className="text-xs text-green-400 flex items-center gap-1">
+                                  <Check className="h-3 w-3" />
+                                  Correct
+                                </span>
                               )}
                             </div>
                           </div>
@@ -316,8 +366,9 @@ export default function PostAssessmentPage() {
                     </div>
                     
                     {q.explanation && (
-                      <p className="text-xs text-muted-foreground">
-                        💡 {q.explanation}
+                      <p className="text-xs text-muted-foreground flex items-start gap-1">
+                        <Lightbulb className="h-3.5 w-3.5 text-teal-400 mt-0.5" />
+                        <span>{q.explanation}</span>
                       </p>
                     )}
                   </div>

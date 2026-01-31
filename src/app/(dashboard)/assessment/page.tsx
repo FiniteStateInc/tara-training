@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/components/email-entry/user-context";
+import { assessmentQuestions } from "@/content/assessment/questions";
+import { BarChart3, CheckCircle2 } from "lucide-react";
 
 interface AssessmentResult {
   id: string;
@@ -44,6 +46,26 @@ export default function AssessmentPage() {
   const hasPreAssessment = !!preAssessment;
   const hasPostAssessment = !!postAssessment;
 
+  const questionMap = new Map(
+    assessmentQuestions.map((question) => [question.id, question])
+  );
+
+  const getKnowledgeGaps = (result: AssessmentResult | null) => {
+    if (!result?.answers) return [];
+    const gaps = Object.entries(result.answers)
+      .filter(([id, answer]) => {
+        const question = questionMap.get(id);
+        return question && answer !== question.correct_answer;
+      })
+      .map(([id]) => questionMap.get(id)?.topic)
+      .filter((topic): topic is string => Boolean(topic));
+
+    return Array.from(new Set(gaps));
+  };
+
+  const preKnowledgeGaps = getKnowledgeGaps(preAssessment);
+  const postKnowledgeGaps = getKnowledgeGaps(postAssessment);
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -66,7 +88,9 @@ export default function AssessmentPage() {
       <Card className="glass-card border-teal-500/30">
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
-            <div className="text-3xl">📊</div>
+            <div className="mt-1 text-teal-400">
+              <BarChart3 className="h-6 w-6" />
+            </div>
             <div>
               <h3 className="font-semibold text-foreground mb-2">Why Take the Assessment?</h3>
               <p className="text-sm text-muted-foreground">
@@ -87,7 +111,10 @@ export default function AssessmentPage() {
             <CardTitle className="flex items-center justify-between">
               <span>Pre-Assessment</span>
               {hasPreAssessment && (
-                <span className="text-sm font-normal text-green-400">✓ Completed</span>
+                <span className="text-sm font-normal text-green-400 flex items-center gap-1">
+                  <CheckCircle2 className="h-4 w-4" />
+                  Completed
+                </span>
               )}
             </CardTitle>
           </CardHeader>
@@ -107,6 +134,18 @@ export default function AssessmentPage() {
                     </p>
                   </div>
                 </div>
+                {preKnowledgeGaps.length > 0 && (
+                  <div className="mb-4 rounded-md border border-border/50 bg-white/5 p-3">
+                    <p className="text-xs font-semibold text-foreground mb-2">
+                      Knowledge gaps
+                    </p>
+                    <ul className="text-xs text-muted-foreground space-y-1">
+                      {preKnowledgeGaps.map((topic) => (
+                        <li key={topic}>• {topic}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 <p className="text-xs text-muted-foreground">
                   Complete the curriculum and take the post-assessment to see your improvement!
                 </p>
@@ -142,7 +181,10 @@ export default function AssessmentPage() {
             <CardTitle className="flex items-center justify-between">
               <span>Post-Assessment</span>
               {hasPostAssessment && (
-                <span className="text-sm font-normal text-green-400">✓ Completed</span>
+                <span className="text-sm font-normal text-green-400 flex items-center gap-1">
+                  <CheckCircle2 className="h-4 w-4" />
+                  Completed
+                </span>
               )}
             </CardTitle>
           </CardHeader>
@@ -167,6 +209,18 @@ export default function AssessmentPage() {
                     )}
                   </div>
                 </div>
+                {postKnowledgeGaps.length > 0 && (
+                  <div className="mb-4 rounded-md border border-border/50 bg-white/5 p-3">
+                    <p className="text-xs font-semibold text-foreground mb-2">
+                      Knowledge gaps
+                    </p>
+                    <ul className="text-xs text-muted-foreground space-y-1">
+                      {postKnowledgeGaps.map((topic) => (
+                        <li key={topic}>• {topic}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 <Link href="/assessment/post/review">
                   <Button variant="outline" size="sm">
                     Review Answers

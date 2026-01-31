@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { modules, tasks } from "@/content/modules";
 import { useProgress } from "@/hooks/use-progress";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Check, CheckCircle2, Lock } from "lucide-react";
 
 interface ModuleDetailPageProps {
   params: Promise<{ moduleId: string }>;
@@ -150,7 +150,7 @@ export default function ModuleDetailPage({ params }: ModuleDetailPageProps) {
                           : "bg-muted text-muted-foreground"
                       }`}
                     >
-                      {isCompleted ? "✓" : index + 1}
+                      {isCompleted ? <Check className="h-4 w-4" /> : index + 1}
                     </span>
                     <span
                       className={
@@ -185,8 +185,9 @@ export default function ModuleDetailPage({ params }: ModuleDetailPageProps) {
                     </Link>
                   )}
                   {isLocked && (
-                    <span className="text-xs text-muted-foreground">
-                      🔒 Locked
+                    <span className="text-xs text-muted-foreground flex items-center gap-1">
+                      <Lock className="h-3.5 w-3.5" />
+                      Locked
                     </span>
                   )}
                 </div>

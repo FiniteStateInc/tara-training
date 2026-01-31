@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/components/email-entry/user-context";
 import { assessmentQuestions } from "@/content/assessment/questions";
+import { Check, Lightbulb, PartyPopper, X } from "lucide-react";
 
 interface AssessmentResult {
   score: number;
@@ -112,7 +113,7 @@ export default function PostAssessmentReviewPage() {
                   {/* Improvement badge */}
                   {improved && (
                     <div className="flex items-center gap-2 mb-3 text-green-400">
-                      <span className="text-xl">🎉</span>
+                      <PartyPopper className="h-5 w-5" />
                       <span className="text-sm font-semibold">
                         You improved on this one!
                       </span>
@@ -154,31 +155,42 @@ export default function PostAssessmentReviewPage() {
                           <div className="flex items-center gap-2">
                             {wasPreAnswer && (
                               <span
-                                className={`text-xs px-2 py-0.5 rounded ${
+                                className={`text-xs px-2 py-0.5 rounded flex items-center gap-1 ${
                                   preCorrect
                                     ? "bg-green-500/30 text-green-400"
                                     : "bg-red-500/30 text-red-400"
                                 }`}
                               >
-                                Pre {preCorrect ? "✓" : "✗"}
+                                Pre{" "}
+                                {preCorrect ? (
+                                  <Check className="h-3 w-3" />
+                                ) : (
+                                  <X className="h-3 w-3" />
+                                )}
                               </span>
                             )}
                             {wasPostAnswer && (
                               <span
-                                className={`text-xs px-2 py-0.5 rounded ${
+                                className={`text-xs px-2 py-0.5 rounded flex items-center gap-1 ${
                                   postCorrect
                                     ? "bg-green-500/30 text-green-400"
                                     : "bg-red-500/30 text-red-400"
                                 }`}
                               >
-                                Post {postCorrect ? "✓" : "✗"}
+                                Post{" "}
+                                {postCorrect ? (
+                                  <Check className="h-3 w-3" />
+                                ) : (
+                                  <X className="h-3 w-3" />
+                                )}
                               </span>
                             )}
                             {isCorrectAnswer &&
                               !wasPreAnswer &&
                               !wasPostAnswer && (
-                                <span className="text-xs text-green-400">
-                                  ✓ Correct
+                                <span className="text-xs text-green-400 flex items-center gap-1">
+                                  <Check className="h-3 w-3" />
+                                  Correct
                                 </span>
                               )}
                           </div>
@@ -188,8 +200,9 @@ export default function PostAssessmentReviewPage() {
                   </div>
 
                   {q.explanation && (
-                    <p className="text-xs text-muted-foreground">
-                      💡 {q.explanation}
+                    <p className="text-xs text-muted-foreground flex items-start gap-1">
+                      <Lightbulb className="h-3.5 w-3.5 text-teal-400 mt-0.5" />
+                      <span>{q.explanation}</span>
                     </p>
                   )}
                 </div>

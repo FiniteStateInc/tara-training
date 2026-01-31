@@ -6,6 +6,7 @@ import { SecurityShield } from "@/components/quest-board/security-shield";
 import { SecurityInsightCard } from "@/components/dashboard/security-insight-card";
 import { Card, CardContent } from "@/components/ui/card";
 import { useProgress } from "@/hooks/use-progress";
+import { BookOpen, CheckCircle2, Flame, Timer } from "lucide-react";
 
 export default function DashboardPage() {
   const { email } = useUser();
@@ -48,7 +49,7 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 <div className="w-14 h-14 rounded-full bg-teal-500/10 border border-teal-500/20 flex items-center justify-center">
-                  <span className="text-2xl">📚</span>
+                  <BookOpen className="h-6 w-6 text-teal-400" />
                 </div>
               </div>
               <div className="mt-3">
@@ -76,7 +77,7 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 <div className="w-14 h-14 rounded-full bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
-                  <span className="text-2xl">✓</span>
+                  <CheckCircle2 className="h-6 w-6 text-cyan-400" />
                 </div>
               </div>
               <p className="text-xs text-muted-foreground mt-3">
@@ -101,7 +102,11 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 <div className="w-14 h-14 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
-                  <span className="text-2xl">{stats.currentStreak > 0 ? "🔥" : "⏱️"}</span>
+                  {stats.currentStreak > 0 ? (
+                    <Flame className="h-6 w-6 text-purple-400" />
+                  ) : (
+                    <Timer className="h-6 w-6 text-purple-400" />
+                  )}
                 </div>
               </div>
               <p className="text-xs text-muted-foreground mt-3">

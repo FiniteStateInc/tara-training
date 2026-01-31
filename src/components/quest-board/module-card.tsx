@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ModuleStatus } from "@/types/training";
 import { cn } from "@/lib/utils";
+import { Lock } from "lucide-react";
 
 interface ModuleCardProps {
   module: {
@@ -113,7 +114,7 @@ export function ModuleCard({ module, completedTasks = 0 }: ModuleCardProps) {
 
           {isLocked && (
             <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground mt-3">
-              <span>🔒</span>
+              <Lock className="h-3.5 w-3.5" />
               <span>Complete previous modules to unlock</span>
             </div>
           )}

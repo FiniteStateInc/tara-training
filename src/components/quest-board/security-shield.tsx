@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useProgress } from "@/hooks/use-progress";
+import { Shield } from "lucide-react";
 
 // Shield segments mapped to modules (13 total)
 const shieldSegments = [
@@ -37,7 +38,7 @@ export function SecurityShield() {
     <Card className="glass-card">
       <CardHeader>
         <CardTitle className="text-lg font-semibold flex items-center gap-2">
-          <span>🛡️</span>
+          <Shield className="h-5 w-5 text-teal-400" />
           <span>Security Shield</span>
         </CardTitle>
       </CardHeader>

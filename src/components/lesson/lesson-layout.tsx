@@ -9,6 +9,7 @@ import { LessonSidebar } from "./lesson-sidebar";
 import { useUser } from "@/components/email-entry/user-context";
 import { completeTask } from "@/lib/progress";
 import { Button } from "@/components/ui/button";
+import { CheckCircle2, PartyPopper } from "lucide-react";
 
 interface LessonLayoutProps {
   moduleId: string;
@@ -100,7 +101,8 @@ export function LessonLayout({
         <div className="flex items-center gap-2">
           {isCompleted && !isFinalTask && (
             <span className="text-sm text-green-400 flex items-center gap-1 animate-in fade-in">
-              ✓ Completed
+              <CheckCircle2 className="h-4 w-4" />
+              Completed
             </span>
           )}
         </div>
@@ -109,7 +111,9 @@ export function LessonLayout({
       {/* Curriculum Complete Banner - shown only for final task completion */}
       {isCompleted && isFinalTask && (
         <div className="mb-4 p-6 rounded-lg bg-gradient-to-r from-teal-500/20 to-cyan-500/20 border border-teal-500/30 text-center animate-in fade-in slide-in-from-top-2">
-          <div className="text-4xl mb-2">🎉</div>
+          <div className="flex justify-center mb-2 text-teal-400">
+            <PartyPopper className="h-8 w-8" />
+          </div>
           <h2 className="text-xl font-bold text-foreground mb-2">
             Congratulations! You&apos;ve completed the entire curriculum!
           </h2>

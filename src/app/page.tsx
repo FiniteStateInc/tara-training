@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/components/email-entry/user-context";
 import { EmailForm } from "@/components/email-entry/email-form";
+import { Check } from "lucide-react";
 
 export default function LandingPage() {
   const { email, isLoading } = useUser();
@@ -51,15 +52,15 @@ export default function LandingPage() {
       {/* Value proposition */}
       <div className="max-w-sm mx-auto text-left space-y-2 mt-8">
         <div className="flex items-start gap-3">
-          <span className="text-teal-400 mt-0.5">✓</span>
+          <Check className="h-4 w-4 text-teal-400 mt-0.5" />
           <span className="text-sm text-muted-foreground">Measure your <span className="text-foreground">knowledge improvement</span> with pre- and post-assessments</span>
         </div>
         <div className="flex items-start gap-3">
-          <span className="text-teal-400 mt-0.5">✓</span>
+          <Check className="h-4 w-4 text-teal-400 mt-0.5" />
           <span className="text-sm text-muted-foreground"><span className="text-foreground">13 hands-on modules</span> demonstrating real TARA workflows</span>
         </div>
         <div className="flex items-start gap-3">
-          <span className="text-teal-400 mt-0.5">✓</span>
+          <Check className="h-4 w-4 text-teal-400 mt-0.5" />
           <span className="text-sm text-muted-foreground">Learn <span className="text-foreground">product security terminology</span> and key insights</span>
         </div>
       </div>
