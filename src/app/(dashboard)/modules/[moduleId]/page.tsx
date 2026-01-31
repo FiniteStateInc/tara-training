@@ -1,6 +1,4 @@
 "use client";
-
-import { use } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,11 +7,11 @@ import { useProgress } from "@/hooks/use-progress";
 import { ArrowRight, Check, CheckCircle2, Lock } from "lucide-react";
 
 interface ModuleDetailPageProps {
-  params: Promise<{ moduleId: string }>;
+  params: { moduleId: string };
 }
 
 export default function ModuleDetailPage({ params }: ModuleDetailPageProps) {
-  const { moduleId } = use(params);
+  const { moduleId } = params;
   const { completions, isLoading } = useProgress();
 
   const currentModule = modules.find((m) => m.id === moduleId);

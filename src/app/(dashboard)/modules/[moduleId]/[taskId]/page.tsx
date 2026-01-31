@@ -1,15 +1,13 @@
 "use client";
-
-import { use } from "react";
 import { modules, tasks } from "@/content/modules";
 import { LessonLayout } from "@/components/lesson/lesson-layout";
 
 interface TaskPageProps {
-  params: Promise<{ moduleId: string; taskId: string }>;
+  params: { moduleId: string; taskId: string };
 }
 
 export default function TaskPage({ params }: TaskPageProps) {
-  const { moduleId, taskId } = use(params);
+  const { moduleId, taskId } = params;
 
   const currentModule = modules.find((m) => m.id === moduleId);
   const moduleTasks = tasks[moduleId] || [];
