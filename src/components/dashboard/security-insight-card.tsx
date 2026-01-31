@@ -10,19 +10,35 @@ import {
 
 export function SecurityInsightCard() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
 
-  const rotateIntervalMs = 30_000;
+  const rotateIntervalMs = 15_000;
   const totalInsights = getTotalInsights();
 
-  // Initialize and rotate on interval
+  // Initialize index on mount and set up auto-rotation
   useEffect(() => {
     setCurrentIndex(getTimedInsightIndex(rotateIntervalMs));
-    const intervalId = setInterval(() => {
+
+    const rotateId = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % totalInsights);
     }, rotateIntervalMs);
 
-    return () => clearInterval(intervalId);
+    return () => clearInterval(rotateId);
   }, [totalInsights]);
+
+  // Progress tracking - resets when currentIndex changes
+  useEffect(() => {
+    setProgress(0);
+    const cycleStartTime = Date.now();
+
+    const progressId = setInterval(() => {
+      const elapsed = Date.now() - cycleStartTime;
+      const newProgress = Math.min(100, (elapsed / rotateIntervalMs) * 100);
+      setProgress(newProgress);
+    }, 100);
+
+    return () => clearInterval(progressId);
+  }, [currentIndex]);
 
   const insight = getInsightByIndex(currentIndex);
 
@@ -39,8 +55,31 @@ export function SecurityInsightCard() {
         </span>
         <button
           onClick={handleNext}
-          className="text-xs text-teal-400 hover:text-teal-300 inline-flex items-center gap-1"
+          className="text-xs text-teal-400 hover:text-teal-300 inline-flex items-center gap-1.5"
         >
+          {/* Countdown doughnut */}
+          <svg className="h-3.5 w-3.5 -rotate-90" viewBox="0 0 16 16">
+            <circle
+              cx="8"
+              cy="8"
+              r="6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              opacity="0.2"
+            />
+            <circle
+              cx="8"
+              cy="8"
+              r="6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeDasharray={`${(progress / 100) * 37.7} 37.7`}
+              strokeLinecap="round"
+              className="transition-all duration-100"
+            />
+          </svg>
           <span>View next insight</span>
           <ArrowRight className="h-3.5 w-3.5" />
         </button>
