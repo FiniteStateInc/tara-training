@@ -34,9 +34,26 @@ export function EmailForm({ onSuccess }: EmailFormProps) {
       return;
     }
 
+    // Restrict to @finitestate.io emails only
+    if (!inputEmail.toLowerCase().endsWith("@finitestate.io")) {
+      setError("Access denied. Please contact your administrator for access.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
+      // Save user to database
+      const response = await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: inputEmail }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save user");
+      }
+
       // Save email to context (and localStorage)
       setEmail(inputEmail);
       onSuccess?.();

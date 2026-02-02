@@ -10,6 +10,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Email required" }, { status: 400 });
   }
 
+  // Restrict to @finitestate.io emails only
+  if (!email.toLowerCase().endsWith("@finitestate.io")) {
+    return NextResponse.json({ error: "Access denied" }, { status: 403 });
+  }
+
   try {
     const supabase = getSupabase();
 
@@ -61,6 +66,11 @@ export async function POST(request: NextRequest) {
 
     if (!email) {
       return NextResponse.json({ error: "Email required" }, { status: 400 });
+    }
+
+    // Restrict to @finitestate.io emails only
+    if (!email.toLowerCase().endsWith("@finitestate.io")) {
+      return NextResponse.json({ error: "Access denied" }, { status: 403 });
     }
 
     // Ensure user exists

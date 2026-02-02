@@ -9,6 +9,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Email required" }, { status: 400 });
   }
 
+  // Restrict to @finitestate.io emails only
+  if (!email.toLowerCase().endsWith("@finitestate.io")) {
+    return NextResponse.json({ error: "Access denied" }, { status: 403 });
+  }
+
   try {
     const supabase = getSupabase();
 
@@ -33,7 +38,7 @@ export async function GET(request: NextRequest) {
     console.error("Error fetching assessment results:", error);
     return NextResponse.json(
       { error: "Failed to fetch assessment results" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -43,13 +48,19 @@ export async function POST(request: NextRequest) {
   try {
     const supabase = getSupabase();
     const body = await request.json();
-    const { email, type, score, totalQuestions, answers, timeTakenSeconds } = body;
+    const { email, type, score, totalQuestions, answers, timeTakenSeconds } =
+      body;
 
     if (!email || !type) {
       return NextResponse.json(
         { error: "Email and type required" },
-        { status: 400 }
+        { status: 400 },
       );
+    }
+
+    // Restrict to @finitestate.io emails only
+    if (!email.toLowerCase().endsWith("@finitestate.io")) {
+      return NextResponse.json({ error: "Access denied" }, { status: 403 });
     }
 
     // Ensure user exists
@@ -57,7 +68,7 @@ export async function POST(request: NextRequest) {
       .from("users")
       .upsert(
         { email, last_active_at: new Date().toISOString() },
-        { onConflict: "email" }
+        { onConflict: "email" },
       );
 
     // Save assessment result
@@ -81,7 +92,7 @@ export async function POST(request: NextRequest) {
     console.error("Error saving assessment result:", error);
     return NextResponse.json(
       { error: "Failed to save assessment result" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
